@@ -1,0 +1,48 @@
+root = true
+
+[*]
+indent_style = space
+indent_size = 4
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+insert_final_newline = true
+
+[*.{razor,html,css,json,yml,yaml,md}]
+indent_size = 2
+
+[*.{cs,csx}]
+# ----- Unused variables / code -----
+# Unused local variable (compiler warning -> error)
+dotnet_diagnostic.CS0168.severity = error   # Variable declared but never used
+dotnet_diagnostic.CS0219.severity = error   # Variable assigned but never used
+dotnet_diagnostic.CS8321.severity = error   # Local function declared but never used
+
+# Unused usings / members / parameters / assignments (analyzers)
+dotnet_diagnostic.IDE0005.severity = error  # Remove unnecessary usings
+dotnet_diagnostic.IDE0051.severity = error  # Remove unused private member
+dotnet_diagnostic.IDE0052.severity = error  # Remove unread private member
+dotnet_diagnostic.IDE0059.severity = error  # Unnecessary value assignment
+dotnet_diagnostic.IDE0060.severity = warning # Remove unused parameter
+
+# Required so IDE0005 fires on build, not just in IDE
+dotnet_style_remove_unnecessary_suppression_exclusions = none
+
+# ----- async / await usage -----
+dotnet_diagnostic.CS1998.severity = error   # async method lacks 'await'
+dotnet_diagnostic.CS4014.severity = error   # Call not awaited
+dotnet_diagnostic.VSTHRD003.severity = warning # Avoid awaiting foreign Tasks (if analyzer present)
+dotnet_diagnostic.VSTHRD100.severity = error   # Avoid async void methods
+dotnet_diagnostic.VSTHRD110.severity = error   # Observe result of async calls
+
+# Method names returning Task should end in 'Async'
+dotnet_naming_rule.async_methods_end_in_async.severity = warning
+dotnet_naming_rule.async_methods_end_in_async.symbols  = async_methods
+dotnet_naming_rule.async_methods_end_in_async.style    = end_in_async
+
+dotnet_naming_symbols.async_methods.applicable_kinds           = method
+dotnet_naming_symbols.async_methods.applicable_accessibilities = *
+dotnet_naming_symbols.async_methods.required_modifiers         = async
+
+dotnet_naming_style.end_in_async.required_suffix = Async
+dotnet_naming_style.end_in_async.capitalization  = pascal_case
